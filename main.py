@@ -116,12 +116,16 @@ def message_text(event):
     # 買う！！などだと空白が生まれちゃう。＝＞これにも対応したい。
     if event.message.text == "買う！" or event.message.text == "買う!":
         r_text = "何を買うんですか？"
+
     elif event.message.text == "買った！" or event.message.text == "買った!":
         r_text = "何を買ったんですか？"
+
     elif event.message.text == "私のID":
         r_text = str(event.source.user_id)
+
     elif "ヘルプ" in event.message.text:
         r_text = "操作コマンド\n\n〇〇買う！\n＝＞〇〇をリストにいれるよ♪\n〇〇買った！\n＝＞〇〇をリストから外すよ♪\nリスト！\n＝＞リストを表示するよ\nおすすめ！\n＝＞只今、準備中・・・。\nhttps://amzn.to/2F74c9L"
+
     elif event.message.text in ["リスト", "りすと", "りすと！", "りすと!", "リスト！", "リスト!", "メモ", "めも"]:
         r_text = "現在のお買い物リストです。"
         source_id = str(event.source.user_id)
@@ -132,7 +136,7 @@ def message_text(event):
             a = a + item.name + '\n'
 
         r_text = r_text + '\n\n' + a
-        # SLACK通知
+
         slack = slackweb.Slack(url=channel_slack_token)
         slice_id = source_id[0:5]
         slack.notify(text=slice_id +"がリストを開いたよ！")   
@@ -144,14 +148,12 @@ def message_text(event):
             r_text = "ユーザーが作成されていません！お問い合わせください!"
         else:
             user_id= User.query.filter_by(source_id=source_id).first().id
-            # ユーザーのItem(false)すべて取得する
             items = Item.query.filter_by(user_id=user_id, bought=False).all()
             for item in items:
                 item.bought = True
                 db.session.add(item)
                 db.session.commit()
             r_text = "全部買ったのでお買い物リストから取り除いたよ！"
-
 
     elif "買う！" in event.message.text or "買う!" in event.message.text:
         user_text = event.message.text
@@ -177,7 +179,6 @@ def message_text(event):
         slice_id = source_id[0:5]
         slack.notify(text=slice_id + "が" + item + "を追加したよ！")
 
-    ## 複数のアイテム買う時の対応必要
     elif "買った！" in event.message.text or "買った!" in event.message.text:
         user_text = event.message.text
         source_id = str(event.source.user_id)
@@ -189,13 +190,10 @@ def message_text(event):
             user = User(source_id=source_id)
             db.session.add(user)
             db.session.commit()
-            # ユーザーが存在していない場合はユーザー登録をお知らせする
             r_text = "ユーザー登録をしたよ！"
 
         if User.query.filter_by(source_id=source_id).first():
             user_id= User.query.filter_by(source_id=source_id).first().id
-            # itemと一致するこの人が持っているitemのboughtカラムをTrueに変更
-            # update
             item_b = Item.query.filter(Item.user_id == user_id ).filter(Item.bought == False).filter(Item.name == item).first()
             item_b.bought = True
             db.session.add(item_b)
@@ -210,7 +208,7 @@ def message_text(event):
         r_text = "おはようございます！"
 
     else:
-        r_text = "あなたがおっしゃったことは" + event.message.text + "ですね。\n操作について知りたい時は、「ヘルプ」と入力してみてね！"
+        r_text = "あなたがおっしゃったことは" + event.message.text + "ですね。\n操作については、「ヘルプ」と入力してみてね！"
     
     line_bot_api.reply_message(
         event.reply_token,
