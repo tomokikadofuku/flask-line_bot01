@@ -159,9 +159,7 @@ def message_text(event):
         data = re.split( r'買う', user_text )
         print(data)
         item = data[0]
-        r_text = item + " をお買い物リストに入れたよ！"
 
-        # アカウントがない場合にアカウント作成
         if not User.query.filter_by(source_id=source_id).first():
             user = User(source_id=source_id)
             db.session.add(user)
@@ -173,8 +171,8 @@ def message_text(event):
         item_o = Item(name=item, user_id=user_id, bought=False)
         db.session.add(item_o)
         db.session.commit()
+        r_text = item + " をお買い物リストに入れたよ！"
 
-        # SLACK通知
         slack = slackweb.Slack(url=channel_slack_token)
         slice_id = source_id[0:5]
         slack.notify(text=slice_id + "が" + item + "を追加したよ！")
@@ -186,7 +184,6 @@ def message_text(event):
         data = re.split( r'買った', user_text )
         print(data)
         item = data[0]
-        r_text = item + " をお買い物リストから除いたよ！"
 
         if not User.query.filter_by(source_id=source_id).first():
             user = User(source_id=source_id)
@@ -203,6 +200,7 @@ def message_text(event):
             item.bought = True
             db.session.add(item)
             db.session.commit()
+            r_text = item + " をお買い物リストから除いたよ！"
 
     elif event.message.text == "おすすめ" or event.message.text == "オススメ" or event.message.text == "おすすめ商品":
         url = ItemUrl.query.first().url
