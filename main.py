@@ -152,30 +152,34 @@ def message_text(event):
 
     ## 複数のアイテム買う時の対応必要
     ## 上記のテスト
-    elif "買う！買う！" in event.message.text or "買う!買う！" in event.message.text:
+    elif "あいうえお！" in event.message.text or "あいうえお!" in event.message.text:
         user_text = event.message.text
         source_id = str(event.source.user_id)
         # もっと簡単に書きたい。
-        if event.message.text == "買う！":
-            item = user_text.replace('買う！','')
+        if event.message.text == "あいうえお！":
+            item = user_text.replace('あいうえお！','')
             text = item + " をお買い物リストに入れたよ！"
         
-        if event.message.text == "買う!":
-            item = user_text.replace('買う!','')
+        if event.message.text == "あいうえお!":
+            item = user_text.replace('あいうえお!','')
             text = item + " をお買い物リストに入れたよ！"
 
-
+        # アカウントがない場合にアカウント作成
+        """
         if not User.query.filter_by(source_id=source_id).first():
             user = User(source_id=source_id)
             db.session.add(user)
             db.session.commit()
             slack = slackweb.Slack(url=channel_slack_token)
             slack.notify(text="新規アカウントが作成されたよ！" + source_id)
+        """
 
         user_id= User.query.filter_by(source_id=source_id).first().id
         item_o = Item(name=item, user_id=user_id, bought=False)
+        """
         db.session.add(item_o)
         db.session.commit()
+        """
         # SLACK通知
         slack = slackweb.Slack(url=channel_slack_token)
         slice_id = source_id[0:5]
