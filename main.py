@@ -160,7 +160,7 @@ def message_text(event):
         source_id = str(event.source.user_id)
         data = re.split( r'買う', user_text )
         print(data)
-        date_list = date[0].split('\n')
+        data_list = data[0].split('\n')
         item = data_list[0]
 
         if not User.query.filter_by(source_id=source_id).first():
