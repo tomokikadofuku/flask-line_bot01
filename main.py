@@ -114,15 +114,15 @@ def callback():
 @handler.add(MessageEvent, message=TextMessage)
 def message_text(event):
     if event.message.text == "買う！" or event.message.text == "買う!":
-        text = "何を買うんですか？"
+        r_text = "何を買うんですか？"
     elif event.message.text == "買った！" or event.message.text == "買った!":
-        text = "何を買ったんですか？"
+        r_text = "何を買ったんですか？"
     elif event.message.text == "私のID":
-        text = str(event.source.user_id)
+        r_text = str(event.source.user_id)
     elif "ヘルプ" in event.message.text:
-        text = "操作コマンド\n\n〇〇買う！\n＝＞〇〇をリストにいれるよ♪\n〇〇買った！\n＝＞〇〇をリストから外すよ♪\nリスト！\n＝＞リストを表示するよ\nおすすめ！\n＝＞只今、準備中・・・。\nhttps://amzn.to/2F74c9L"
+        r_text = "操作コマンド\n\n〇〇買う！\n＝＞〇〇をリストにいれるよ♪\n〇〇買った！\n＝＞〇〇をリストから外すよ♪\nリスト！\n＝＞リストを表示するよ\nおすすめ！\n＝＞只今、準備中・・・。\nhttps://amzn.to/2F74c9L"
     elif event.message.text == "リスト" or event.message.text == "りすと" or event.message.text == "りすと！" or event.message.text == "りすと!" or event.message.text == "リスト！" or event.message.text == "リスト!" or event.message.text == "メモ":
-        text = "現在のお買い物リストです。"
+        r_text = "現在のお買い物リストです。"
         source_id = str(event.source.user_id)
         user_id = User.query.filter_by(source_id=source_id).first().id
         items = Item.query.filter_by(user_id=user_id).filter(Item.bought == False).all()
@@ -130,7 +130,7 @@ def message_text(event):
         for item in items:
             a = a + item.name + '\n'
 
-        text = text + '\n\n' + a
+        r_text = r_text + '\n\n' + a
         # SLACK通知
         slack = slackweb.Slack(url=channel_slack_token)
         slice_id = source_id[0:5]
@@ -149,47 +149,18 @@ def message_text(event):
                 item.bought = True
                 db.session.add(item)
                 db.session.commit()
-            text = "全部買ったのでお買い物リストから取り除いたよ！"
+            r_text = "全部買ったのでお買い物リストから取り除いたよ！"
 
-    ## 複数のアイテム買う時の対応必要
-    ## 上記のテスト
-    elif "あいうえお！" in event.message.text or "あいうえお!" in event.message.text:
+
+    elif "買う！" in event.message.text or "買う!" in event.message.text:
         user_text = event.message.text
         source_id = str(event.source.user_id)
-        #item = user_text.replace('あいうえお！','')
-        data = re.split( r'あいうえお', user_text )
+        data = re.split( r'買う', user_text )
         print(data)
         item = data[0]
-
-        text = item + " をお買い物リストに入れたよ！"
+        r_text = item + " をお買い物リストに入れたよ！"
 
         # アカウントがない場合にアカウント作成
-        """
-        if not User.query.filter_by(source_id=source_id).first():
-            user = User(source_id=source_id)
-            db.session.add(user)
-            db.session.commit()
-            slack = slackweb.Slack(url=channel_slack_token)
-            slack.notify(text="新規アカウントが作成されたよ！" + source_id)
-        """
-
-        user_id= User.query.filter_by(source_id=source_id).first().id
-        item_o = Item(name=item, user_id=user_id, bought=False)
-        """
-        db.session.add(item_o)
-        db.session.commit()
-        """
-        # SLACK通知
-        slack = slackweb.Slack(url=channel_slack_token)
-        slice_id = source_id[0:5]
-        slack.notify(text=slice_id + "が" + item + "を追加したよ！")
-
-    elif "買う！" in event.message.text:
-        user_text = event.message.text
-        source_id = str(event.source.user_id)
-        item = user_text.replace('買う！','')
-        text = item + " をお買い物リストに入れたよ！"
-
         if not User.query.filter_by(source_id=source_id).first():
             user = User(source_id=source_id)
             db.session.add(user)
@@ -201,28 +172,7 @@ def message_text(event):
         item_o = Item(name=item, user_id=user_id, bought=False)
         db.session.add(item_o)
         db.session.commit()
-        # SLACK通知
-        slack = slackweb.Slack(url=channel_slack_token)
-        slice_id = source_id[0:5]
-        slack.notify(text=slice_id + "が" + item + "を追加したよ！")
-    
-    elif "買う!" in event.message.text:
-        user_text = event.message.text
-        source_id = str(event.source.user_id)
-        item = user_text.replace('買う!','')
-        text = item + " をお買い物リストに入れたよ！"
 
-        if not User.query.filter_by(source_id=source_id).first():
-            user = User(source_id=source_id)
-            db.session.add(user)
-            db.session.commit()
-            slack = slackweb.Slack(url=channel_slack_token)
-            slack.notify(text="新規アカウントが作成されたよ！" + source_id)
-
-        user_id= User.query.filter_by(source_id=source_id).first().id
-        item_o = Item(name=item, user_id=user_id, bought=False)
-        db.session.add(item_o)
-        db.session.commit()
         # SLACK通知
         slack = slackweb.Slack(url=channel_slack_token)
         slice_id = source_id[0:5]
@@ -233,14 +183,14 @@ def message_text(event):
         user_text = event.message.text
         source_id = str(event.source.user_id)
         item = user_text.replace('買った！', '')
-        text = item + " をお買い物リストから除いたよ！"
+        r_text = item + " をお買い物リストから除いたよ！"
 
         if not User.query.filter_by(source_id=source_id).first():
             user = User(source_id=source_id)
             db.session.add(user)
             db.session.commit()
             # ユーザーが存在していない場合はユーザー登録をお知らせする
-            text = "ユーザー登録をしたよ！"
+            r_text = "ユーザー登録をしたよ！"
 
         if User.query.filter_by(source_id=source_id).first():
             user_id= User.query.filter_by(source_id=source_id).first().id
@@ -257,14 +207,14 @@ def message_text(event):
         user_text = event.message.text
         source_id = str(event.source.user_id)
         item = user_text.replace('買った!', '')
-        text = item + " をお買い物リストから除いたよ！"
+        r_text = item + " をお買い物リストから除いたよ！"
 
         if not User.query.filter_by(source_id=source_id).first():
             user = User(source_id=source_id)
             db.session.add(user)
             db.session.commit()
             # ユーザーが存在していない場合はユーザー登録をお知らせする
-            text = "ユーザー登録をしたよ！"
+            r_text = "ユーザー登録をしたよ！"
 
         if User.query.filter_by(source_id=source_id).first():
             user_id= User.query.filter_by(source_id=source_id).first().id
@@ -279,17 +229,17 @@ def message_text(event):
 
     elif event.message.text == "おすすめ" or event.message.text == "オススメ" or event.message.text == "おすすめ商品":
         url = ItemUrl.query.first().url
-        text = "作者志田による最近のおすすめ！\nお水をおうちに置いておこう！\n" + url
+        r_text = "作者志田による最近のおすすめ！\nお水をおうちに置いておこう！\n" + url
 
     elif "おはよ" in event.message.text:
-        text = "おはようございます！"
+        r_text = "おはようございます！"
 
     else:
-        text = "あなたがおっしゃったことは" + event.message.text + "ですね。\n操作について知りたい時は、「ヘルプ」と入力してみてね！"
+        r_text = "あなたがおっしゃったことは" + event.message.text + "ですね。\n操作について知りたい時は、「ヘルプ」と入力してみてね！"
     
     line_bot_api.reply_message(
         event.reply_token,
-        TextSendMessage(text)
+        TextSendMessage(r_text)
     )
 
 
