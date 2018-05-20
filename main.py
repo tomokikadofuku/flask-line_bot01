@@ -156,14 +156,10 @@ def message_text(event):
     elif "あいうえお！" in event.message.text or "あいうえお!" in event.message.text:
         user_text = event.message.text
         source_id = str(event.source.user_id)
-        # もっと簡単に書きたい。
-        if event.message.text == "あいうえお！":
-            item = user_text.replace('あいうえお！','')
-            return item
-        
-        if event.message.text == "あいうえお!":
-            item = user_text.replace('あいうえお!','')
-            return item
+        #item = user_text.replace('あいうえお！','')
+        data = re.split( r'あいうえお', user_text )
+        print(data)
+        item = date[0]
 
         text = item + " をお買い物リストに入れたよ！"
 
