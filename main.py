@@ -158,9 +158,11 @@ def message_text(event):
         # もっと簡単に書きたい。
         item = ""
         if event.message.text == "買う！":
+            global item
             item = user_text.replace('買う！','')
         
         if event.message.text == "買う!":
+            global item
             item = user_text.replace('買う!','')
 
 
