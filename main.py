@@ -156,10 +156,13 @@ def message_text(event):
         user_text = event.message.text
         source_id = str(event.source.user_id)
         # もっと簡単に書きたい。
+        item = ""
         if event.message.text == "買う！":
+            nonlocal item
             item = user_text.replace('買う！','')
         
         if event.message.text == "買う!":
+            nonlocal item
             item = user_text.replace('買う!','')
 
 
