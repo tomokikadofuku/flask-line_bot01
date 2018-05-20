@@ -156,7 +156,6 @@ def message_text(event):
         user_text = event.message.text
         source_id = str(event.source.user_id)
         # もっと簡単に書きたい。
-        global item
         if event.message.text == "あいうえお！":
             item = user_text.replace('あいうえお！','')
         
