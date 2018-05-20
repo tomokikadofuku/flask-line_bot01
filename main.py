@@ -113,6 +113,7 @@ def callback():
 
 @handler.add(MessageEvent, message=TextMessage)
 def message_text(event):
+    # 買う！！などだと空白が生まれちゃう。＝＞これにも対応したい。
     if event.message.text == "買う！" or event.message.text == "買う!":
         r_text = "何を買うんですか？"
     elif event.message.text == "買った！" or event.message.text == "買った!":
@@ -179,10 +180,12 @@ def message_text(event):
         slack.notify(text=slice_id + "が" + item + "を追加したよ！")
 
     ## 複数のアイテム買う時の対応必要
-    elif "買った！" in event.message.text:
+    elif "買った！" in event.message.text or "買った!" in event.message.text:
         user_text = event.message.text
         source_id = str(event.source.user_id)
-        item = user_text.replace('買った！', '')
+        data = re.split( r'買った', user_text )
+        print(data)
+        item = data[0]
         r_text = item + " をお買い物リストから除いたよ！"
 
         if not User.query.filter_by(source_id=source_id).first():
@@ -200,8 +203,6 @@ def message_text(event):
             item.bought = True
             db.session.add(item)
             db.session.commit()
-        #else:
-        #    text = "買った！と宣言した商品は、メモから削除されているかな？「メモ」と入力して確認してみよう！\nもしメモに残っているいたら、開発者志田まで連絡してください！"
 
     elif "買った!" in event.message.text:
         user_text = event.message.text
@@ -224,8 +225,6 @@ def message_text(event):
             item.bought = True
             db.session.add(item)
             db.session.commit()
-        #else:
-        #    text = "買った！と宣言した商品は、メモから削除されているかな？「メモ」と入力して確認してみよう！\nもしメモに残っているいたら、開発者志田まで連絡してください！"
 
     elif event.message.text == "おすすめ" or event.message.text == "オススメ" or event.message.text == "おすすめ商品":
         url = ItemUrl.query.first().url
