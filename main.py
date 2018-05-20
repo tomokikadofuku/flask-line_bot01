@@ -14,6 +14,7 @@
 
 import os
 import sys
+import re
 import slackweb
 from argparse import ArgumentParser
 
