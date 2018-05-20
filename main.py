@@ -158,9 +158,11 @@ def message_text(event):
         # もっと簡単に書きたい。
         if event.message.text == "あいうえお！":
             item = user_text.replace('あいうえお！','')
+            return item
         
         if event.message.text == "あいうえお!":
             item = user_text.replace('あいうえお!','')
+            return item
 
         text = item + " をお買い物リストに入れたよ！"
 
