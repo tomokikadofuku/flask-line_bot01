@@ -200,7 +200,7 @@ def message_text(event):
             item.bought = True
             db.session.add(item)
             db.session.commit()
-            r_text = item + " をお買い物リストから除いたよ！"
+            r_text = str(item) + " をお買い物リストから除いたよ！"
 
     elif event.message.text == "おすすめ" or event.message.text == "オススメ" or event.message.text == "おすすめ商品":
         url = ItemUrl.query.first().url
