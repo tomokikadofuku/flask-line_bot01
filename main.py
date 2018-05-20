@@ -158,12 +158,12 @@ def message_text(event):
         # もっと簡単に書きたい。
         if event.message.text == "買う！":
             item = user_text.replace('買う！','')
+            text = item + " をお買い物リストに入れたよ！"
         
         if event.message.text == "買う!":
             item = user_text.replace('買う!','')
+            text = item + " をお買い物リストに入れたよ！"
 
-
-        text = item + " をお買い物リストに入れたよ！"
 
         if not User.query.filter_by(source_id=source_id).first():
             user = User(source_id=source_id)
