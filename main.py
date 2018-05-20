@@ -151,8 +151,8 @@ def message_text(event):
             text = "全部買ったのでお買い物リストから取り除いたよ！"
 
     ## 複数のアイテム買う時の対応必要
-    ## 上記の
-    elif event.message.text in ["買う！","買う!"]:
+    ## 上記のテスト
+    elif "買う！" in event.message.text or "買う!" in event.message.text:
         user_text = event.message.text
         source_id = str(event.source.user_id)
         # もっと簡単に書きたい。
