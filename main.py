@@ -159,7 +159,7 @@ def message_text(event):
         #item = user_text.replace('あいうえお！','')
         data = re.split( r'あいうえお', user_text )
         print(data)
-        item = date[0]
+        item = data[0]
 
         text = item + " をお買い物リストに入れたよ！"
 
