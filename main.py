@@ -151,12 +151,19 @@ def message_text(event):
             text = "全部買ったのでお買い物リストから取り除いたよ！"
 
     ## 複数のアイテム買う時の対応必要
-    elif "買う！" in event.message.text:
+    ## 上記の
+    elif event.message.text in ["買う！","買う!"]:
         user_text = event.message.text
         source_id = str(event.source.user_id)
-        item = user_text.replace('買う！','')
+        # もっと簡単に書きたい。
+        if event.message.text == "買う！":
+            item = user_text.replace('買う！','')
+        
+        if event.message.text == "買う!":
+            item = user_text.replace('買う!','')
+
+
         text = item + " をお買い物リストに入れたよ！"
-        # ここで、DBにデータをいれる
 
         if not User.query.filter_by(source_id=source_id).first():
             user = User(source_id=source_id)
@@ -173,32 +180,6 @@ def message_text(event):
         slack = slackweb.Slack(url=channel_slack_token)
         slice_id = source_id[0:5]
         slack.notify(text=slice_id + "が" + item + "を追加したよ！")
-
-    elif "買う!" in event.message.text:
-        user_text = event.message.text
-        source_id = str(event.source.user_id)
-        item = user_text.replace('買う!','')
-        text = item + " をお買い物リストに入れたよ！"
-        # ここで、DBにデータを入れる
-        #
-        # データ型
-        # 
-        if not User.query.filter_by(source_id=source_id).first():
-            user = User(source_id=source_id)
-            db.session.add(user)
-            db.session.commit()
-            slack = slackweb.Slack(url=channel_slack_token)
-            slack.notify(text="新規アカウントが作成されたよ！" + source_id)
-
-        user_id= User.query.filter_by(source_id=source_id).first().id
-        item_o = Item(name=item, user_id=user_id, bought=False)
-        db.session.add(item_o)
-        db.session.commit()
-        # SLACK通知
-        slack = slackweb.Slack(url=channel_slack_token)
-        slice_id = source_id[0:5]
-        slack.notify(text=slice_id + "が" + item + "を追加したよ！")
-
 
     ## 複数のアイテム買う時の対応必要
     elif "買った！" in event.message.text:
