@@ -122,7 +122,7 @@ def message_text(event):
         r_text = str(event.source.user_id)
     elif "ヘルプ" in event.message.text:
         r_text = "操作コマンド\n\n〇〇買う！\n＝＞〇〇をリストにいれるよ♪\n〇〇買った！\n＝＞〇〇をリストから外すよ♪\nリスト！\n＝＞リストを表示するよ\nおすすめ！\n＝＞只今、準備中・・・。\nhttps://amzn.to/2F74c9L"
-    elif event.message.text == "リスト" or event.message.text == "りすと" or event.message.text == "りすと！" or event.message.text == "りすと!" or event.message.text == "リスト！" or event.message.text == "リスト!" or event.message.text == "メモ":
+    elif event.message.text in ["リスト", "りすと", "りすと！", "りすと!", "リスト！", "リスト!", "メモ", "めも"]:
         r_text = "現在のお買い物リストです。"
         source_id = str(event.source.user_id)
         user_id = User.query.filter_by(source_id=source_id).first().id
