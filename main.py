@@ -204,28 +204,6 @@ def message_text(event):
             db.session.add(item)
             db.session.commit()
 
-    elif "買った!" in event.message.text:
-        user_text = event.message.text
-        source_id = str(event.source.user_id)
-        item = user_text.replace('買った!', '')
-        r_text = item + " をお買い物リストから除いたよ！"
-
-        if not User.query.filter_by(source_id=source_id).first():
-            user = User(source_id=source_id)
-            db.session.add(user)
-            db.session.commit()
-            # ユーザーが存在していない場合はユーザー登録をお知らせする
-            r_text = "ユーザー登録をしたよ！"
-
-        if User.query.filter_by(source_id=source_id).first():
-            user_id= User.query.filter_by(source_id=source_id).first().id
-            # itemと一致するこの人が持っているitemのboughtカラムをTrueに変更
-            # update
-            item = Item.query.filter(Item.user_id == user_id).filter(Item.bought == False).filter(Item.name == item).first()
-            item.bought = True
-            db.session.add(item)
-            db.session.commit()
-
     elif event.message.text == "おすすめ" or event.message.text == "オススメ" or event.message.text == "おすすめ商品":
         url = ItemUrl.query.first().url
         r_text = "作者志田による最近のおすすめ！\nお水をおうちに置いておこう！\n" + url
