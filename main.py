@@ -124,7 +124,8 @@ def message_text(event):
         r_text = str(event.source.user_id)
 
     elif "ヘルプ" in event.message.text:
-        r_text = "操作コマンド\n\n〇〇買う！入力すると、\n＝＞〇〇をメモにいれるよ♪\n〇〇買った！\n＝＞〇〇をメモから外すよ♪\nメモ\n＝＞メモを表示するよ♪"
+        r_text = "操作コマンド\n\n〇〇買う！入力すると、\n＝＞〇〇をメモにいれるよ♪\n〇〇買った！\n＝＞〇〇をメモから外すよ♪\nメモ\n
+        ＝＞メモを表示するよ♪\n全部買った！\n=>メモを全部消すよ！"
 
     elif event.message.text in ["リスト", "りすと", "りすと！", "りすと!", "リスト！", "リスト!", "メモ", "めも"]:
         r_text = "現在のお買い物リストです。"
@@ -139,8 +140,8 @@ def message_text(event):
 
         slack = slackweb.Slack(url=channel_slack_token)
         slice_id = source_id[0:5]
-        slack.notify(text=slice_id +"がリストを開いたよ！")   
-    
+        slack.notify(text=slice_id +"がリストを開いたよ！")
+
     elif event.message.text == "全部買った！" or event.message.text == "全部買った!":
         source_id = str(event.source.user_id)
 
@@ -210,7 +211,7 @@ def message_text(event):
 
     else:
         r_text = "あなたがおっしゃったことは「" + event.message.text + "」ですね。\n操作については、「ヘルプ」と入力してみてね！"
-    
+
     line_bot_api.reply_message(
         event.reply_token,
         TextSendMessage(r_text)
