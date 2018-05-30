@@ -17,7 +17,6 @@ import sys
 import re
 import slackweb
 from argparse import ArgumentParser
-
 from flask import Flask, request, abort, jsonify
 from flask_sqlalchemy import SQLAlchemy
 
