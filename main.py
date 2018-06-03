@@ -200,6 +200,10 @@ def message_text(event):
             db.session.commit()
             r_text = item + " をお買い物リストから除いたよ！"
 
+            slack = slackweb.Slack(url=channel_slack_token)
+            slice_id = source_id[0:5]
+            slack.notify(text=slice_id + "が" + item + "を購入したよ！")
+
     elif event.message.text == "おすすめ" or event.message.text == "オススメ" or event.message.text == "おすすめ商品":
         url = ItemUrl.query.first().url
         r_text = "作者志田による最近のおすすめ！\nお水をおうちに置いておこう！\n" + url
