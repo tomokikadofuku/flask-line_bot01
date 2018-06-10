@@ -126,7 +126,7 @@ def message_text(event):
         for item in items:
             item_list = item_list + item.name + '\n'
 
-        r_text = r_text + '\n\n' + a
+        r_text = r_text + '\n\n' + item_list
 
         slack = slackweb.Slack(url=channel_slack_token)
         slice_id = source_id[0:5]
