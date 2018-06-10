@@ -47,7 +47,7 @@ if channel_access_token is None:
 line_bot_api = LineBotApi(channel_access_token)
 handler = WebhookHandler(channel_secret)
 
-## ### 一旦データベースを作り直す
+## 一旦データベースを作り直す
 ##   from main import db
 ##   db.drop_all()
 ##   db.create_all()
@@ -74,7 +74,7 @@ class Item(db.Model):
     def __repr__(self):
         return '<Item %r>' % self.bought
 
-## ### DB直接入力
+## DB直接入力
 ##   url = ItemUrl('hoge','https://hoeghoge')
 ##   db.session.add(url)
 ##   db.session.commit()
