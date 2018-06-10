@@ -144,7 +144,7 @@ def message_text(event):
         source_id = str(event.source.user_id)
 
         if not User.query.filter_by(source_id=source_id).first():
-            r_text = "ユーザーが作成されていません！お問い合わせください!"
+            r_text = "ユーザーが作成されていません！まずは、「〇〇買う！」と買いたいものを入力してみよう！"
         else:
             user_id= User.query.filter_by(source_id=source_id).first().id
             items = Item.query.filter_by(user_id=user_id, bought=False).all()
