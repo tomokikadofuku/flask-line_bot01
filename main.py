@@ -154,7 +154,7 @@ def message_text(event):
             user_id = User.query.filter_by(source_id=source_id).first().id
             items = Item.query.filter_by(user_id=user_id).filter(Item.bought == True).all()
             a = ""
-            count = ""
+            count = 0
             for item in items:
                 a = a + item.name + '\n'
                 count = count + 1
