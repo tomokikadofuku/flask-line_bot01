@@ -130,7 +130,7 @@ def message_text(event):
 
         slack = slackweb.Slack(url=channel_slack_token)
         slice_id = source_id[0:5]
-        slack.notify(text=slice_id +"がリストを開いたよ！")   
+        slack.notify(text=slice_id +"がリストを開いたよ")
     
     elif event.message.text == "全部買った！" or event.message.text == "全部買った!":
         source_id = str(event.source.user_id)
@@ -145,6 +145,7 @@ def message_text(event):
                 db.session.add(item)
                 db.session.commit()
             r_text = "全部買ったのでお買い物リストから取り除いたよ！"
+
     elif event.message.text == "買ったもの":
         r_text = "過去28日間のうちに購入したものです!"
         source_id = str(event.source.user_id)
@@ -181,7 +182,7 @@ def message_text(event):
         item_o = Item(name=item, user_id=user_id, bought=False)
         db.session.add(item_o)
         db.session.commit()
-        r_text = item + " をお買い物リストに入れたよ！"
+        r_text = item + " をお買い物リストに入れたよ"
 
         slack = slackweb.Slack(url=channel_slack_token)
         slice_id = source_id[0:5]
@@ -206,7 +207,7 @@ def message_text(event):
             item_b.bought = True
             db.session.add(item_b)
             db.session.commit()
-            r_text = item + " をお買い物リストから除いたよ！"
+            r_text = item + " をお買い物リストから除いたよ"
 
             slack = slackweb.Slack(url=channel_slack_token)
             slice_id = source_id[0:5]
@@ -220,7 +221,13 @@ def message_text(event):
         r_text = "おはようございます！"
 
     else:
-        r_text = "あなたがおっしゃったことは「" + event.message.text + "」ですね。\n操作について知りたい時は、「ヘルプ」と入力してみてね！"
+        source_id = str(event.source.user_id)
+        user_text = event.message.text
+        r_text = "あなたがおっしゃったことは「" + user_text + "」ですね。\n操作について知りたい時は、「ヘルプ」と入力してみてね！"
+
+        slack = slackweb.Slack(url=channel_slack_token)
+        slice_id = source_id[0:5]
+        slack.notify(text=slice_id + "が" + user_text + "と言ったよ")
     
     line_bot_api.reply_message(
         event.reply_token,
