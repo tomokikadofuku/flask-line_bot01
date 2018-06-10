@@ -148,13 +148,16 @@ def message_text(event):
     elif event.message.text == "買ったもの":
         r_text = "過去28日間のうちに購入したものです!"
         source_id = str(event.source.user_id)
-        user_id = User.query.filter_by(source_id=source_id).first().id
-        items = Item.query.filter_by(user_id=user_id).filter(Item.bought == True).all()
-        a = ""
-        for item in items:
-            a = a + item.name + '\n'
+        if not User.query.filter_by(source_id=source_id).first():
+            r_text = "ユーザーが作成されていません！まずは、「〇〇買う！」と買いたいものを入力してみよう！"
+        else:
+            user_id = User.query.filter_by(source_id=source_id).first().id
+            items = Item.query.filter_by(user_id=user_id).filter(Item.bought == True).all()
+            a = ""
+            for item in items:
+                a = a + item.name + '\n'
 
-        r_text = r_text + '\n\n' + a
+            r_text = r_text + '\n\n' + a
 
     elif "買う！" in event.message.text or "買う!" in event.message.text:
         user_text = event.message.text
