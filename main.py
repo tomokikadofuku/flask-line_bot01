@@ -20,7 +20,6 @@ from argparse import ArgumentParser
 from flask import Flask, request, abort, jsonify
 from flask_sqlalchemy import SQLAlchemy
 
-# linebot
 from linebot import (
     LineBotApi, WebhookHandler
 )
@@ -35,7 +34,6 @@ app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
 db = SQLAlchemy(app)
 
-# get channel_secret and channel_access_token from your environment variable
 channel_secret = os.getenv('LINE_CHANNEL_SECRET', None)
 channel_access_token = os.getenv('LINE_CHANNEL_ACCESS_TOKEN', None)
 channel_slack_token = os.getenv('SLACK_PYTHON', None)
