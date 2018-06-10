@@ -158,7 +158,7 @@ def message_text(event):
             for item in items:
                 a = a + item.name + '\n'
                 count = count + 1
-            b = count + "点、買ったよ！"
+            b = str(count) + "点、買ったよ！"
 
             r_text = r_text + '\n\n' + a + '\n\n' + b
 
