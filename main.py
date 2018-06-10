@@ -153,14 +153,14 @@ def message_text(event):
         else:
             user_id = User.query.filter_by(source_id=source_id).first().id
             items = Item.query.filter_by(user_id=user_id).filter(Item.bought == True).all()
-            a = ""
+            item_list = ""
             count = 0
             for item in items:
-                a = a + item.name + '\n'
+                item_list = item_list + item.name + '\n'
                 count = count + 1
-            b = str(count) + "点、買ったよ！"
+            item_count = str(count) + "点、買ったよ！"
 
-            r_text = r_text + '\n\n' + a + '\n\n' + b
+            r_text = r_text + '\n\n' + item_list + '\n\n' + item_count
 
     elif "買う！" in event.message.text or "買う!" in event.message.text:
         user_text = event.message.text
