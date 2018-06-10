@@ -122,9 +122,9 @@ def message_text(event):
         source_id = str(event.source.user_id)
         user_id = User.query.filter_by(source_id=source_id).first().id
         items = Item.query.filter_by(user_id=user_id).filter(Item.bought == False).all()
-        a = ""
+        item_list = ""
         for item in items:
-            a = a + item.name + '\n'
+            item_list = item_list + item.name + '\n'
 
         r_text = r_text + '\n\n' + a
 
