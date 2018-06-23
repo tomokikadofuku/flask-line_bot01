@@ -115,7 +115,7 @@ def message_text(event):
         r_text = str(event.source.user_id)
 
     elif "ヘルプ" in event.message.text:
-        r_text = "操作コマンド\n\n〇〇買う！入力すると、\n＝＞〇〇をメモにいれるよ♪\n〇〇買った！\n＝＞〇〇をメモから外すよ♪\nメモ\n＝＞メモを表示するよ♪"
+        r_text = "ネギ買う！\nと入力すると、ネギを買うものメモにいれるよ♪\n\nネギ買った！\nと入力するとネギをメモから外すよ♪"
 
     elif event.message.text in ["リスト", "りすと", "りすと！", "りすと!", "リスト！", "リスト!", "メモ", "めも"]:
         r_text = "現在のお買い物リストです。"
